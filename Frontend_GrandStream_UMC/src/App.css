@@ -1,0 +1,229 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #f4f6f9;
+    color: #333;
+}
+
+button,
+input,
+select {
+    font-family: inherit;
+}
+
+/* ================= LOGIN ================= */
+
+.login-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #4facfe 0%, #00c6fb 100%);
+}
+
+.login-card {
+    width: 360px;
+    background: white;
+    padding: 35px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+}
+
+.login-card h2 {
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.error {
+    margin-top: 15px;
+    color: red;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* ================= DASHBOARD ================= */
+
+.dashboard {
+    padding: 30px;
+}
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #343a40;
+    color: white;
+    padding: 18px 25px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.header h2 {
+    font-size: 24px;
+}
+
+/* ================= GRID ================= */
+
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+}
+
+/* ================= CARD ================= */
+
+.card {
+    background: white;
+    border-radius: 10px;
+    padding: 25px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .08);
+}
+
+.card-title {
+    color: #007bff;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #eee;
+}
+
+/* ================= FORM ================= */
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+.input {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    transition: .2s;
+}
+
+.input:focus {
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, .3);
+}
+
+/* ================= BUTTON ================= */
+
+.btn {
+    border: none;
+    padding: 11px 18px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: white;
+    font-size: 15px;
+    transition: .2s;
+    margin-top: 8px;
+    margin-right: 8px;
+}
+
+.btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-primary {
+    width: 100%;
+    background: #007bff;
+}
+
+.btn-primary:hover {
+    background: #0069d9;
+}
+
+.btn-success {
+    background: #28a745;
+}
+
+.btn-success:hover {
+    background: #218838;
+}
+
+.btn-danger {
+    background: #dc3545;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.btn-info {
+    background: #17a2b8;
+}
+
+.btn-info:hover {
+    background: #138496;
+}
+
+/* ================= BILL ================= */
+
+.bill-amount {
+    margin-top: 20px;
+    margin-bottom: 15px;
+    font-size: 24px;
+    font-weight: bold;
+    color: #dc3545;
+}
+
+/* ================= TABLE ================= */
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.table th {
+    background: #007bff;
+    color: white;
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.table td {
+    padding: 12px;
+    border: 1px solid #ddd;
+}
+
+.table tbody tr:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.table tbody tr:hover {
+    background: #eef6ff;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 900px) {
+
+    .grid-container {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+
+    .dashboard {
+        padding: 15px;
+    }
+
+}
