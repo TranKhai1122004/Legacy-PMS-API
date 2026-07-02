@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "95gd8eMASZw=",
+  "dgSpecHash": "WdYzr7D8wuM=",
   "success": true,
-  "projectFilePath": "D:\\A_Pratice_DotNet\\GrandStream_UMC\\PMS\\PMS.csproj",
+  "projectFilePath": "D:\\A_Pratice_DotNet\\GrandStream\\GrandStream_UMC\\PMS\\PMS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\10.0.9\\microsoft.aspnetcore.authentication.jwtbearer.10.0.9.nupkg.sha512",
     "C:\\Users\\ASUS\\.nuget\\packages\\microsoft.aspnetcore.openapi\\10.0.9\\microsoft.aspnetcore.openapi.10.0.9.nupkg.sha512",
@@ -21,9 +21,9 @@
       "code": "NU1903",
       "level": "Warning",
       "message": "Package 'Microsoft.OpenApi' 2.0.0 has a known high severity vulnerability, https://github.com/advisories/GHSA-v5pm-xwqc-g5wc",
-      "projectPath": "D:\\A_Pratice_DotNet\\GrandStream_UMC\\PMS\\PMS.csproj",
+      "projectPath": "D:\\A_Pratice_DotNet\\GrandStream\\GrandStream_UMC\\PMS\\PMS.csproj",
       "warningLevel": 1,
-      "filePath": "D:\\A_Pratice_DotNet\\GrandStream_UMC\\PMS\\PMS.csproj",
+      "filePath": "D:\\A_Pratice_DotNet\\GrandStream\\GrandStream_UMC\\PMS\\PMS.csproj",
       "libraryId": "Microsoft.OpenApi",
       "targetGraphs": [
         "net10.0"

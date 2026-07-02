@@ -460,11 +460,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\A_Pratice_DotNet\\GrandStream_UMC\\PMS\\PMS.csproj",
+      "projectUniqueName": "D:\\A_Pratice_DotNet\\GrandStream\\GrandStream_UMC\\PMS\\PMS.csproj",
       "projectName": "PMS",
-      "projectPath": "D:\\A_Pratice_DotNet\\GrandStream_UMC\\PMS\\PMS.csproj",
+      "projectPath": "D:\\A_Pratice_DotNet\\GrandStream\\GrandStream_UMC\\PMS\\PMS.csproj",
       "packagesPath": "C:\\Users\\ASUS\\.nuget\\packages\\",
-      "outputPath": "D:\\A_Pratice_DotNet\\GrandStream_UMC\\PMS\\obj\\",
+      "outputPath": "D:\\A_Pratice_DotNet\\GrandStream\\GrandStream_UMC\\PMS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\ASUS\\AppData\\Roaming\\NuGet\\NuGet.Config"
