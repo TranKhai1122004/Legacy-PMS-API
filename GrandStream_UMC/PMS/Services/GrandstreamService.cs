@@ -31,12 +31,29 @@ namespace PMS_Real.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_mockoonUrl}/api/login?username={username}&password={password}");
-                return response.IsSuccessStatusCode ? await response.Content.ReadAsStringAsync() : null;
-            }
-            catch { return null; }
-        }
+                var response = await _httpClient.PostAsync(
+                    $"{_mockoonUrl}/api/login?username={username}&password={password}",
+                    null
+                );
 
+                Console.WriteLine($"Status: {response.StatusCode}");
+
+                var body = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(body);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return body;
+                }
+
+                return null;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex);
+                return null;
+            }
+        }
         // --- Hàm xử lý chung 3 nghiệp vụ: Check-in/Check-out, Room Move, Wake-up Call ---
         public async Task<bool> SendPmsActionAsync(string action, string room, string firstName, string lastName, string newRoom, string wakeUpTime = null)
         {

@@ -206,12 +206,18 @@ function App() {
             )}
 
             {action === "wakeup" && (
-              <input
-                className="input"
-                placeholder="0630"
-                value={wakeUpTime}
-                onChange={(e) => setWakeUpTime(e.target.value)}
-              />
+              <div className="form-group">
+                <label>Thời gian báo thức</label>
+
+                <input
+                  className="input"
+                  type="time"
+                  value={wakeUpTime}
+                  onChange={(e) => setWakeUpTime(e.target.value)}
+                  onClick={(e) => e.target.showPicker?.()}
+                  onFocus={(e) => e.target.showPicker?.()}
+                />
+              </div>
             )}
 
             <button className="btn btn-success">

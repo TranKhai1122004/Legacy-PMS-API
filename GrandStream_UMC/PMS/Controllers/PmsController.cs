@@ -21,9 +21,23 @@ namespace PMS_Real.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var result = await _grandstreamService.LoginAsync(request.Username, request.Password);
-            if (result != null) return Ok(new { success = true, message = "Đăng nhập thành công" });
-            return BadRequest(new { success = false, message = "Sai tài khoản hoặc mật khẩu" });
+            // 1. Kiểm tra dữ liệu đầu vào trống
+            if (request == null || string.IsNullOrEmpty(request.Username) || string.IsNullOrEmpty(request.Password))
+            {
+                return BadRequest(new { success = false, message = "Tài khoản và mật khẩu không được để trống" });
+            }
+
+            // 2. Gọi Service để lấy token/kết quả từ Mockoon
+            var token = await _grandstreamService.LoginAsync(request.Username, request.Password);
+
+            // 3. Nếu token hợp lệ (không null hoặc rỗng)
+            if (!string.IsNullOrEmpty(token))
+            {
+                return Ok(new { success = true, message = "Đăng nhập thành công", token });
+            }
+
+            // 4. Nếu thất bại, trả về 401 Unauthorized (đúng chuẩn bảo mật hơn 400)
+            return Unauthorized(new { success = false, message = "Sai tài khoản hoặc mật khẩu" });
         }
 
         // API Gộp: Lấy lịch sử cuộc gọi và tổng tiền hóa đơn

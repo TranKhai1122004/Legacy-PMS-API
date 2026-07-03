@@ -11,7 +11,14 @@ builder.Services.AddSingleton<IGrandstreamService, GrandstreamService>();
 // Mở CORS cho Frontend local gọi vào
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+    // Thay vì dùng AddDefaultPolicy, hãy dùng AddPolicy với tên "AllowReact"
+    options.AddPolicy("AllowReact",
+        policy =>
+        {
+            policy.AllowAnyOrigin() // Hoặc .WithOrigins("http://localhost:5173") để an toàn hơn
+                  .AllowAnyMethod()
+                  .AllowAnyHeader();
+        });
 });
 
 var app = builder.Build();
