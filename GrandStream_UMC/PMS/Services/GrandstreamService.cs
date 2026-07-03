@@ -10,7 +10,7 @@ namespace PMS_Real.Services
     public interface IGrandstreamService
     {
         Task<string> LoginAsync(string username, string password);
-        Task<bool> SendPmsActionAsync(string action, string room, string firstName, string lastName, string newRoom, string wakeUpTime = null);
+        Task<bool> SendPmsActionAsync(string action, string room, string firstName, string lastName, string newRoom, string wakeUpTime = "");
         Task<object> GetRoomBillAndLogsAsync(string roomNumber); // Hàm gộp đúng yêu cầu của bạn
     }
 
@@ -46,16 +46,16 @@ namespace PMS_Real.Services
                     return body;
                 }
 
-                return null;
+                return "";
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex);
-                return null;
+                return "";
             }
         }
         // --- Hàm xử lý chung 3 nghiệp vụ: Check-in/Check-out, Room Move, Wake-up Call ---
-        public async Task<bool> SendPmsActionAsync(string action, string room, string firstName, string lastName, string newRoom, string wakeUpTime = null)
+        public async Task<bool> SendPmsActionAsync(string action, string room, string firstName, string lastName, string newRoom, string wakeUpTime = "")
         {
             try
             {
@@ -78,7 +78,7 @@ namespace PMS_Real.Services
             try
             {
                 var response = await _httpClient.GetAsync($"{_mockoonUrl}/api/cdrapi");
-                if (!response.IsSuccessStatusCode) return null;
+                if (!response.IsSuccessStatusCode) return "";
                 using var doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
                 decimal totalCost = 0;
@@ -89,12 +89,12 @@ namespace PMS_Real.Services
                 {
                     if (item.GetProperty("caller").GetString() == roomNumber)
                     {
-                        string callee = item.GetProperty("callee").GetString();
+                        string? callee = item.GetProperty("callee").GetString();
                         int duration = item.GetProperty("duration").GetInt32();
-                        string status = item.GetProperty("status").GetString();
+                        string? status = item.GetProperty("status").GetString();
 
                         // 1. Tính tổng tiền hóa đơn ngầm dựa trên danh sách cuộc gọi ngoại mạng
-                        if (callee.Length > 3)
+                        if ((callee?.Length ?? 0) > 3)
                         {
                             totalCost += Math.Ceiling((decimal)duration / 60) * 1000;
                         }
@@ -117,7 +117,7 @@ namespace PMS_Real.Services
                     calls = roomCalls
                 };
             }
-            catch { return null; }
+            catch { return ""; }
         }
     }
 }

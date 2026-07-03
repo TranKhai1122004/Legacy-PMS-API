@@ -59,14 +59,19 @@ namespace PMS_Real.Controllers
         }
     }
 
-    public class LoginRequest { public string Username { get; set; } public string Password { get; set; } }
+    public class LoginRequest
+    {
+        public string Username { get; set; } = "";
+        public string Password { get; set; } = "";
+    }
+
     public class ActionRequest
     {
-        public string Action { get; set; }
-        public string Room { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public string NewRoom { get; set; }
-        public string WakeUpTime { get; set; }
+        public string Action { get; set; } = "";
+        public string Room { get; set; } = "";
+        public string FirstName { get; set; } = "";
+        public string LastName { get; set; } = "";
+        public string NewRoom { get; set; } = "";
+        public string WakeUpTime { get; set; } = "";
     }
 }
