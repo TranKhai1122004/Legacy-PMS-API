@@ -3,18 +3,11 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
+using PMS.DTOs; 
 
-namespace PMS_Real.Services
+namespace PMS.Services
 {
-    // 1. INTERFACE QUẢN LÝ 3 HÀM (Login, Điều khiển chung, và Hàm gộp dữ liệu cuộc gọi + Bill)
-    public interface IGrandstreamService
-    {
-        Task<string> LoginAsync(string username, string password);
-        Task<bool> SendPmsActionAsync(string action, string room, string firstName, string lastName, string newRoom, string wakeUpTime = "");
-        Task<object> GetRoomBillAndLogsAsync(string roomNumber); // Hàm gộp đúng yêu cầu của bạn
-    }
-
-    // 2. CLASS TRIỂN KHAI LOGIC CHI TIẾT
+    
     public class GrandstreamService : IGrandstreamService
     {
         private readonly HttpClient _httpClient;
@@ -26,7 +19,7 @@ namespace PMS_Real.Services
             _httpClient = new HttpClient(handler);
         }
 
-        // --- Đăng nhập ---
+        
         public async Task<string> LoginAsync(string username, string password)
         {
             try
@@ -54,37 +47,96 @@ namespace PMS_Real.Services
                 return "";
             }
         }
-        // --- Hàm xử lý chung 3 nghiệp vụ: Check-in/Check-out, Room Move, Wake-up Call ---
-        public async Task<bool> SendPmsActionAsync(string action, string room, string firstName, string lastName, string newRoom, string wakeUpTime = "")
+
+        
+        public async Task<object> SendPmsActionAsync(ActionRequest request)
         {
             try
             {
-                string targetRoom = action == "roommove" ? newRoom : room;
-                string timeParam = action == "wakeup" ? $"&time={wakeUpTime ?? ""}" : "";
+                
+                var queryParams = new List<string>
+        {
+            $"action={request.Action}",
+            $"address={request.Room}"
+        };
 
-                string url = $"{_mockoonUrl}/api/pms_action?action={action}&address={room}&room={targetRoom}&firstname={firstName ?? ""}&lastname={lastName ?? ""}{timeParam}";
+                
+                switch (request.Action?.ToLower())
+                {
+                    case "checkin":
+                        queryParams.Add($"action=checkin");
+                        queryParams.Add($"firstname={Uri.EscapeDataString(request.FirstName ?? "")}");
+                        queryParams.Add($"lastname={Uri.EscapeDataString(request.LastName ?? "")}");
+                        break;
 
+                    case "checkout":
+                        queryParams.Add($"action=checkout");
+
+                        break;
+
+                    case "roommove":
+                        queryParams.Add($"action=roommove");
+
+
+                        break;
+
+                    case "wakeup":
+                        queryParams.Add($"action=wakeup");
+
+                        break;
+
+                    default:
+                        
+                        queryParams.Add($"action={Uri.EscapeDataString(request.Action ?? "")}");
+                        break;
+                }
+
+                
+                string queryString = string.Join("&", queryParams);
+                string url = $"{_mockoonUrl}/api/pms_action?{queryString}";
+
+                
                 var response = await _httpClient.GetAsync(url);
-                if (!response.IsSuccessStatusCode) return false;
-                using var doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
-                return doc.RootElement.GetProperty("result").GetInt32() == 0;
+                if (!response.IsSuccessStatusCode)
+                    return new { success = false, message = "Không kết nối được API PMS" };
+
+                string jsonString = await response.Content.ReadAsStringAsync();
+                using var doc = JsonDocument.Parse(jsonString);
+
+                int resultCode = doc.RootElement.GetProperty("result").GetInt32();
+
+                
+                string mockoonMessage = doc.RootElement.TryGetProperty("message", out var msgProp)
+                                        ? (msgProp.GetString() ?? "Thao tác thành công")
+                                        : "Thao tác thành công";
+
+                return new
+                {
+                    success = (resultCode == 0),
+                    message = mockoonMessage
+                };
             }
-            catch { return false; }
+            catch
+            {
+                return new { success = false, message = "Hệ thống gặp sự cố xử lý" };
+            }
         }
 
-        // --- HÀM GỘP: Vừa lọc lịch sử cuộc gọi gốc, vừa tính tiền hóa đơn ---
-        public async Task<object> GetRoomBillAndLogsAsync(string roomNumber)
+        
+        public async Task<RoomBillResponse?> GetRoomBillAndLogsAsync(string roomNumber)
         {
             try
             {
                 var response = await _httpClient.GetAsync($"{_mockoonUrl}/api/cdrapi");
-                if (!response.IsSuccessStatusCode) return "";
+                if (!response.IsSuccessStatusCode) return null; // Trả về null nếu lỗi kết nối
+
                 using var doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync());
 
                 decimal totalCost = 0;
-                var roomCalls = new List<object>();
+                
+                var roomCalls = new List<CallLogDto>();
 
-                // Lọc mảng dữ liệu trả về từ Mockoon/Tổng đài
+
                 foreach (var item in doc.RootElement.EnumerateArray())
                 {
                     if (item.GetProperty("caller").GetString() == roomNumber)
@@ -93,31 +145,31 @@ namespace PMS_Real.Services
                         int duration = item.GetProperty("duration").GetInt32();
                         string? status = item.GetProperty("status").GetString();
 
-                        // 1. Tính tổng tiền hóa đơn ngầm dựa trên danh sách cuộc gọi ngoại mạng
+                        
                         if ((callee?.Length ?? 0) > 3)
                         {
                             totalCost += Math.Ceiling((decimal)duration / 60) * 1000;
                         }
 
-                        // 2. Thêm vào mảng lịch sử cuộc gọi gốc (chỉ lưu thông tin thô)
-                        roomCalls.Add(new
+                       
+                        roomCalls.Add(new CallLogDto
                         {
-                            callee,
-                            duration,
-                            status
+                            Callee = callee,
+                            Duration = duration,
+                            Status = status
                         });
                     }
                 }
 
-                // Trả ra một cục data duy nhất chứa cả 2 thông tin
-                return new
+                
+                return new RoomBillResponse
                 {
-                    room = roomNumber,
-                    totalCost,
-                    calls = roomCalls
+                    Room = roomNumber,
+                    TotalCost = totalCost,
+                    Calls = roomCalls
                 };
             }
-            catch { return ""; }
+            catch { return null; }
         }
     }
 }
