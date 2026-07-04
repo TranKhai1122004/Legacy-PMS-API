@@ -1,0 +1,306 @@
+{
+    "uuid": "15ee0f81-5ba4-4c60-94c6-5b238272f21f",
+    "lastMigration": 33,
+    "name": "Grandstream UCM Mock",
+    "endpointPrefix": "",
+    "latency": 0,
+    "port": 8089,
+    "hostname": "",
+    "folders": [],
+    "routes": [
+        {
+            "uuid": "0757fc78-e2e2-48c3-8ba9-4c18d0b69056",
+            "type": "http",
+            "documentation": "",
+            "method": "post",
+            "endpoint": "api/login",
+            "responses": [
+                {
+                    "uuid": "ea054e37-680c-496e-9afe-fbd8167f9dce",
+                    "body": "{\r\n  \"status\": \"success\",\r\n  \"token\": \"mock-token-xyz-123456\"\r\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "query",
+                            "modifier": "username",
+                            "value": "admin",
+                            "invert": false,
+                            "operator": "equals"
+                        },
+                        {
+                            "target": "query",
+                            "modifier": "password",
+                            "value": "123",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "AND",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
+                    "crudKey": "id",
+                    "callbacks": []
+                },
+                {
+                    "uuid": "b672afc4-77b4-46fb-9e17-1e6031a15370",
+                    "body": "{\r\n  \"status\": \"error\",\r\n  \"message\": \"Sai tài khoản hoặc mật khẩu tổng đài!\"\r\n}",
+                    "latency": 0,
+                    "statusCode": 400,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": true,
+                    "crudKey": "id",
+                    "callbacks": []
+                }
+            ],
+            "responseMode": null,
+            "streamingMode": null,
+            "streamingInterval": 0
+        },
+        {
+            "uuid": "dd6e7940-7570-411b-af30-1f804e9f1d09",
+            "type": "http",
+            "documentation": "",
+            "method": "get",
+            "endpoint": "api/pms_action",
+            "responses": [
+                {
+                    "uuid": "4404acd5-4e3d-42e8-ab25-9881b86beee1",
+                    "body": "{\r\n  \"result\": 0,\r\n  \"message\": \"Room change successful.\"\r\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "query",
+                            "modifier": "action",
+                            "value": "roommove",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
+                    "crudKey": "id",
+                    "callbacks": []
+                },
+                {
+                    "uuid": "8850f2cf-7ff3-4f35-9fb2-ffb35337efb2",
+                    "body": "{}",
+                    "latency": 0,
+                    "statusCode": 400,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": true,
+                    "crudKey": "id",
+                    "callbacks": []
+                },
+                {
+                    "uuid": "a1de696c-f017-4960-8a44-4a0f6f1c02b5",
+                    "body": "{\r\n  \"result\": 0,\r\n  \"message\": \"Checkin successful.\"\r\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "query",
+                            "modifier": "action",
+                            "value": "checkin",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
+                    "crudKey": "id",
+                    "callbacks": []
+                },
+                {
+                    "uuid": "e7d9b4be-d5fc-4a8d-b796-5bcecb66bd0a",
+                    "body": "{\r\n  \"result\": 0,\r\n  \"message\": \"Checkout successful.\"\r\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "query",
+                            "modifier": "action",
+                            "value": "checkout",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
+                    "crudKey": "id",
+                    "callbacks": []
+                },
+                {
+                    "uuid": "88757c8c-1500-4356-833a-9cff78b25471",
+                    "body": "{\r\n  \"result\": 0,\r\n  \"message\": \"Wakeup successful.\"\r\n}",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [
+                        {
+                            "target": "query",
+                            "modifier": "action",
+                            "value": "wakeup",
+                            "invert": false,
+                            "operator": "equals"
+                        }
+                    ],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": false,
+                    "crudKey": "id",
+                    "callbacks": []
+                }
+            ],
+            "responseMode": null,
+            "streamingMode": null,
+            "streamingInterval": 0
+        },
+        {
+            "uuid": "5b439ff3-6735-4056-9c76-4309a56f446c",
+            "type": "http",
+            "documentation": "",
+            "method": "get",
+            "endpoint": "api/cdrapi",
+            "responses": [
+                {
+                    "uuid": "482eb3df-18a2-460c-af7b-55838a9d1cff",
+                    "body": "[\r\n  {\r\n    \"caller\": \"101\",\r\n    \"callee\": \"0987654321\",\r\n    \"start_time\": \"2026-07-02 08:15:20\",\r\n    \"duration\": 120,\r\n    \"billable\": 120,\r\n    \"status\": \"ANSWERED\"\r\n  },\r\n  {\r\n    \"caller\": \"102\",\r\n    \"callee\": \"0912345678\",\r\n    \"start_time\": \"2026-07-02 09:00:10\",\r\n    \"duration\": 45,\r\n    \"billable\": 45,\r\n    \"status\": \"ANSWERED\"\r\n  },\r\n  {\r\n    \"caller\": \"101\",\r\n    \"callee\": \"102\",\r\n    \"start_time\": \"2026-07-02 09:30:00\",\r\n    \"duration\": 65,\r\n    \"billable\": 65,\r\n    \"status\": \"ANSWERED\"\r\n  },\r\n  {\r\n    \"caller\": \"103\",\r\n    \"callee\": \"0909998887\",\r\n    \"start_time\": \"2026-07-02 10:10:15\",\r\n    \"duration\": 0,\r\n    \"billable\": 0,\r\n    \"status\": \"BUSY\"\r\n  },\r\n  {\r\n    \"caller\": \"104\",\r\n    \"callee\": \"0243123456\",\r\n    \"start_time\": \"2026-07-02 11:20:45\",\r\n    \"duration\": 310,\r\n    \"billable\": 310,\r\n    \"status\": \"ANSWERED\"\r\n  },\r\n  {\r\n    \"caller\": \"102\",\r\n    \"callee\": \"0966554433\",\r\n    \"start_time\": \"2026-07-02 13:05:12\",\r\n    \"duration\": 15,\r\n    \"billable\": 15,\r\n    \"status\": \"ANSWERED\"\r\n  },\r\n  {\r\n    \"caller\": \"105\",\r\n    \"callee\": \"0911223344\",\r\n    \"start_time\": \"2026-07-02 14:15:30\",\r\n    \"duration\": 0,\r\n    \"billable\": 0,\r\n    \"status\": \"NO ANSWER\"\r\n  },\r\n  {\r\n    \"caller\": \"101\",\r\n    \"callee\": \"0888777666\",\r\n    \"start_time\": \"2026-07-02 14:40:22\",\r\n    \"duration\": 185,\r\n    \"billable\": 185,\r\n    \"status\": \"ANSWERED\"\r\n  },\r\n  {\r\n    \"caller\": \"103\",\r\n    \"callee\": \"105\",\r\n    \"start_time\": \"2026-07-02 15:02:10\",\r\n    \"duration\": 90,\r\n    \"billable\": 0,\r\n    \"status\": \"ANSWERED\"\r\n  },\r\n  {\r\n    \"caller\": \"104\",\r\n    \"callee\": \"0977112233\",\r\n    \"start_time\": \"2026-07-02 15:30:00\",\r\n    \"duration\": 50,\r\n    \"billable\": 50,\r\n    \"status\": \"ANSWERED\"\r\n  }\r\n]",
+                    "latency": 0,
+                    "statusCode": 200,
+                    "label": "",
+                    "headers": [],
+                    "bodyType": "INLINE",
+                    "filePath": "",
+                    "databucketID": "",
+                    "sendFileAsBody": false,
+                    "rules": [],
+                    "rulesOperator": "OR",
+                    "disableTemplating": false,
+                    "fallbackTo404": false,
+                    "default": true,
+                    "crudKey": "id",
+                    "callbacks": []
+                }
+            ],
+            "responseMode": null,
+            "streamingMode": null,
+            "streamingInterval": 0
+        }
+    ],
+    "rootChildren": [
+        {
+            "type": "route",
+            "uuid": "0757fc78-e2e2-48c3-8ba9-4c18d0b69056"
+        },
+        {
+            "type": "route",
+            "uuid": "dd6e7940-7570-411b-af30-1f804e9f1d09"
+        },
+        {
+            "type": "route",
+            "uuid": "5b439ff3-6735-4056-9c76-4309a56f446c"
+        }
+    ],
+    "proxyMode": false,
+    "proxyHost": "",
+    "proxyRemovePrefix": false,
+    "tlsOptions": {
+        "enabled": false,
+        "type": "CERT",
+        "pfxPath": "",
+        "certPath": "",
+        "keyPath": "",
+        "caPath": "",
+        "passphrase": ""
+    },
+    "cors": true,
+    "headers": [
+        {
+            "key": "Content-Type",
+            "value": "application/json"
+        },
+        {
+            "key": "Access-Control-Allow-Origin",
+            "value": "*"
+        },
+        {
+            "key": "Access-Control-Allow-Methods",
+            "value": "GET,POST,PUT,PATCH,DELETE,HEAD,OPTIONS"
+        },
+        {
+            "key": "Access-Control-Allow-Headers",
+            "value": "Content-Type, Origin, Accept, Authorization, Content-Length, X-Requested-With"
+        }
+    ],
+    "proxyReqHeaders": [
+        {
+            "key": "",
+            "value": ""
+        }
+    ],
+    "proxyResHeaders": [
+        {
+            "key": "",
+            "value": ""
+        }
+    ],
+    "data": [],
+    "callbacks": []
+}
