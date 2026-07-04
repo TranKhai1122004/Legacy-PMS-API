@@ -1,45 +1,60 @@
 using Microsoft.AspNetCore.Mvc;
-using PMS_Real.Services;
+using PMS.Services;
+using PMS.DTOs;
 using System.Threading.Tasks;
 
-namespace PMS_Real.Controllers
+namespace PMS.Controllers
 {
     [ApiController]
-    [Route("api")]
+    [Route("api")] // có thể để "api" thay vì "api/", .NET sẽ tự hiểu nối với route con
+    [Microsoft.AspNetCore.Cors.EnableCors("AllowReact")]
     public class PmsController : ControllerBase
     {
         private readonly IGrandstreamService _grandstreamService;
 
-        // Tiêm Service qua Constructor Injection giống hệt NestJS
         public PmsController(IGrandstreamService grandstreamService)
         {
             _grandstreamService = grandstreamService;
         }
 
-        [HttpGet("back-login")]
-        public async Task<IActionResult> Login([FromQuery] string username, [FromQuery] string password)
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            // Truyền tiếp 2 tham số này vào Service
-            var result = await _grandstreamService.LoginAsync(username, password);
-            return result != null ? Content(result, "application/json") : BadRequest(new { message = "Lỗi kết nối hoặc sai tài khoản/mật khẩu" });
+
+            var token = await _grandstreamService.LoginAsync(request.Username, request.Password);
+
+            if (!string.IsNullOrEmpty(token))
+            {
+                return Ok(new { success = true, message = "Đăng nhập thành công", token });
+            }
+
+
+            return Unauthorized(new { success = false, message = "Sai tài khoản hoặc mật khẩu" });
         }
 
-        [HttpGet("back-action")]
-        public async Task<IActionResult> HandleAction(string action, string room, string firstName = null, string lastName = null, string newRoom = null)
-        {
-            bool isSuccess = await _grandstreamService.SendPmsActionAsync(action, room, firstName, lastName, newRoom);
-            return Ok(new { success = isSuccess, action, room });
-        }
 
-        [HttpGet("back-bill")]
+        [HttpGet("bill")]
         public async Task<IActionResult> GetBill([FromQuery] string room)
         {
-            // Gọi thẳng hàm gộp để lấy cục dữ liệu vừa có tiền vừa có lịch sử chi tiết
-            var billAndLogsData = await _grandstreamService.GetRoomBillAndLogsAsync(room);
+            if (string.IsNullOrEmpty(room))
+            {
+                return BadRequest(new { message = "Mã phòng không được để trống" });
+            }
 
-            return billAndLogsData != null
-                ? Ok(billAndLogsData)
-                : NotFound(new { message = "Không tìm thấy dữ liệu phòng" });
+            var data = await _grandstreamService.GetRoomBillAndLogsAsync(room);
+            return data != null ? Ok(data) : NotFound(new { message = "Không tìm thấy phòng" });
+        }
+
+
+        [HttpPost("action")]
+        public async Task<IActionResult> HandleAction([FromBody] ActionRequest request)
+        {
+
+            var resultObj = await _grandstreamService.SendPmsActionAsync(request);
+
+
+            return Ok(resultObj);
         }
     }
 }
